@@ -1,12 +1,5 @@
-import time
-from functools import partial
-
-import jax.numpy as jnp
 import numpy as np
 
-from netket.optimizer.qgt import QGTJacobianDense
-import netket as nk
-import jax
 
 
 def get_umbrella_monitor_callback(save_times, save_path):

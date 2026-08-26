@@ -1,36 +1,9 @@
-"""Exact time-dependent TFIM quantum-anneal dynamics for small spin glasses.
-
-Everything needed to evolve a 2D spin-glass instance through the D-Wave
-annealing schedule and read off its 2-local ZZ correlations:
-
-  * instance loading           -> load_instance / instance_dir_name
-  * schedule loading           -> load_schedule / schedule_interpolators
-  * Hamiltonian terms          -> build_terms (netket IsingJax -> sparse) / ground_state
-  * observables                -> spin_configs / zz_correlations
-  * exact evolution            -> run_quench (QuTiP)
-
-The transverse-field Ising Hamiltonian for the anneal is
-
-    H(s) = J(s) * Hzz  +  Gamma(s) * Hx ,
-    Hzz = sum_<ij> w_ij sigma^z_i sigma^z_j  (weighted spin glass),
-    Hx  = - sum_i sigma^x_i                  (transverse field).
-
-With anneal parameter s in [0, 1] traversed in physical time t_a (ns), and after
-the change of integration variable t = t_a * s, the Schrodinger equation that is
-integrated reads
-
-    i d|psi>/ds = pi * t_a * [ J(s) Hzz + Gamma(s) Hx ] |psi> ,   s : 0 -> 1 ,
-
-starting from the ground state of H(s=0) (the transverse-field paramagnet). The
-factor pi converts the GHz schedule to the angular-frequency / Pauli convention
-used to generate the DMRG reference data.
-"""
+"""Exact time-dependent TFIM quantum-anneal dynamics for small spin glasses."""
 
 import os
 
 import numpy as np
 import netket as nk
-import qutip
 import scipy.sparse.linalg as ssla
 from scipy.interpolate import interp1d
 
@@ -139,7 +112,7 @@ def ground_state(H):
 def spin_configs(L):
     """(2**L, L) array of +/-1 spin configurations in netket basis order.
 
-    The ordering matches ``build_terms`` (and the QuTiP states evolved from it),
+    The ordering matches ``build_terms``,
     so spin configurations can be read straight off this basis.
     """
     return np.asarray(nk.hilbert.Spin(0.5, N=L).all_states())
@@ -156,52 +129,3 @@ def zz_correlations(psi, configs):
     L = configs.shape[1]
     C = (configs * p[:, None]).T @ configs  # <Z_i Z_j>, shape (L, L)
     return np.real(C[np.triu_indices(L, k=1)])
-
-
-# ---------------------------------------------------------------------------
-# Exact evolution
-# ---------------------------------------------------------------------------
-def run_quench(topology, shape, instance, t_a, schedule_path, instance_root,
-               precision=256, n_out=200, return_states=False):
-    """Run the exact anneal for one instance and return final-time ZZ correlations.
-
-    Parameters
-    ----------
-    topology, shape : instance identifiers (e.g. ``"2d"``, ``[4, 4]``); select the
-        folder under ``instance_root``.
-    instance : integer instance seed.
-    t_a : annealing time in ns.
-    schedule_path : path to ``qa_schedule.csv``.
-    instance_root : root of the instances dataset (``data_dwave/instances``).
-    precision : coupling precision (256 or 1), must match the reference dataset.
-    n_out : number of output time points along s in [0, 1].
-    return_states : if True also return ``(s_out, states)``.
-
-    Returns
-    -------
-    corrs : flat array of <Z_i Z_j>, i < j, at s = 1.
-    """
-    weights, edges = load_instance(instance_root, topology, shape, instance, precision)
-    L = max(max(i, j) for i, j in edges) + 1
-    Hzz, Hx = build_terms(L, weights, edges)
-    _, f_gamma, f_J = schedule_interpolators(schedule_path)
-
-    # Initial state: ground state of H(s=0).
-    H0 = float(f_J(0.0)) * Hzz + float(f_gamma(0.0)) * Hx
-    psi0 = qutip.Qobj(ground_state(H0).reshape(-1, 1))
-
-    prefactor = np.pi * t_a
-    H = [
-        [qutip.Qobj(Hzz), lambda s, **kw: prefactor * float(f_J(s))],
-        [qutip.Qobj(Hx), lambda s, **kw: prefactor * float(f_gamma(s))],
-    ]
-
-    s_out = np.linspace(0.0, 1.0, n_out)
-    result = qutip.sesolve(H, psi0, s_out, e_ops=[])
-
-    configs = spin_configs(L)
-    corrs = zz_correlations(result.states[-1].full(), configs)
-
-    if return_states:
-        return corrs, s_out, result.states
-    return corrs

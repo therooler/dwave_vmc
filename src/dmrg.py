@@ -1,14 +1,4 @@
-"""Loading of exact MPS reference correlations and comparison metrics.
-
-MPS data lives under
-``<root>/<topology>_<shape>_precision<prec>/<t_a>ns/chi<D>/correlations_uppertriangular_20_seeds.npz``
-with a single array ``corrs`` of shape ``(n_instances, n_pairs)`` holding <Z_i Z_j>
-for i < j (row-major upper triangle), one row per instance/seed.
-
-The instances and correlations folders use different topology names for some
-geometries (e.g. instances ``3ddimer``/``biclique`` vs. correlations ``3d``/``rbm``);
-:data:`CORR_TOPOLOGY` maps from the instances-folder name to the correlations one.
-"""
+"""Loading of exact MPS reference correlations and comparison metrics."""
 
 import os
 import glob

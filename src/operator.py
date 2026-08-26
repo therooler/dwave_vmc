@@ -1,9 +1,4 @@
-"""A lean weighted transverse-field Ising operator (jax, diagonal mels).
-
-This is the time-dependent generator's building block for t-VMC:
-
-    H = sum_<ij> (J * Jmat_ij) sigma^z_i sigma^z_j  -  h sum_i sigma^x_i .
-"""
+"""A lean weighted transverse-field Ising operator"""
 
 from functools import partial
 
