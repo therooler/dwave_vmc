@@ -1,0 +1,17 @@
+[project]
+name = "dwave"
+version = "0.1.0"
+description = "Code for reproducing experiments."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "flax==0.12.5",
+    "jax[cuda12]==0.9.1",
+    "jaxmg[cuda12]==0.0.9",
+    "matplotlib==3.11.0",
+    "netket==3.22.3",
+    "networkx==3.6.1",
+    "nqxpack==0.1.16",
+    "pyyaml==6.0.3",
+    "wandb==0.25.1",
+]
