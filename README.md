@@ -146,6 +146,7 @@ Key fields (see `make_configs.py` `PAPER_BASE` for all defaults):
 
 | field | meaning |
 |---|---|
+| `legacy_rank_k2`| In a previous version of the code, there were redundant parameters for the 2-body correlators. **Set to False for new experiments that do not involve reproducing the original results!**|
 | `topology`, `shape`, `instance`, `precision` | graph family, shape box, instance seed, coupling precision (256/1) |
 | `t_a` | annealing time (ns); must match the reference file for comparison |
 | `schedule` | path to `data_dwave/qa_schedule.csv` |

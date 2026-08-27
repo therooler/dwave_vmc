@@ -61,8 +61,10 @@ class CorrelatorJastrow(nn.Module):
 
     orders: Sequence[int] = (2, 4)
     rank: int = 1
-    legacy_rank_k2: bool = True
-    """Keep the redundant ``rank`` axis on the ``k=2`` correlator (legacy)."""
+    legacy_rank_k2: bool = False
+    """Keep the redundant ``rank`` axis on the ``k=2`` correlator (legacy).
+    Only set to true for reproducing the original experiments!!!
+    """
     param_dtype: type = complex
     param_initializer: NNInitFunc = default_kernel_init
     compute_dtype: Any = None
