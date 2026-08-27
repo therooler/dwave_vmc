@@ -198,7 +198,6 @@ def build_experiments():
                                 orders=[2, 4],
                                 instance=i,
                                 t_a=t_a,
-                                # compute_dtype="float64",
                             )
                         )
         experiments.append(
@@ -221,7 +220,7 @@ def build_experiments():
                     n_samples=n_samples,
                     legacy_rank_k2=False,  # remove redundant parameters.
                 )
-                for n_samples in [2**17, 2**18, 2**19]
+                for n_samples in [2**17, 2**18,]
             ],
         )
     )
