@@ -1,6 +1,8 @@
 # Spin-glass TFIM quench: t-VMC
 
-Code for *Numerical simulation of D-Wave's quantum advantage experiment with time-dependent variational Monte Carlo* (arxiv:xxxx.xxxx).
+Code for *Numerical simulation of D-Wave's quantum advantage experiment with time-dependent variational Monte Carlo* [arxiv:2609.01719](https://arxiv.org/abs/2609.01719).
+
+The data containing the checkpoints and final simulation data can be found at 10.5281/zenodo.22131893 (LINK WILL BE ADDED)
 
 Simulate the time-dependent transverse-field Ising (TFIM) **quantum-anneal quench** of D-Wave
 spin-glass instances following the schedule in [`data_dwave/qa_schedule.csv`](data_dwave/qa_schedule.csv), and

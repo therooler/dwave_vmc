@@ -110,7 +110,7 @@ MIN_RANK = {
 N_INSTANCES = 5
 
 # The large-N multi-GPU case and is generated separately (distributed_biclique).
-FINAL_EXCLUDE = {("biclique", (2, 18, 18))}
+FINAL_EXCLUDE = {("biclique", (2, 18, 18)), ("diamond", (8,8,8))}
 
 
 def available_shapes(instance_dir, topology, precision=256):
