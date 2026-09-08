@@ -54,7 +54,7 @@ def build_generator(config):
     graph = nk.graph.Graph(edges=[list(e) for e in edges])
     _, f_gamma, f_J = schedule_interpolators(config["schedule"])
 
-    pref = np.pi * config["t_a"]
+    pref = 2 * np.pi * config["t_a"]
 
     def H(s, scale=True):
         if scale:
