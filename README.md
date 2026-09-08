@@ -2,24 +2,21 @@
 
 Code for *Numerical simulation of D-Wave's quantum advantage experiment with time-dependent variational Monte Carlo* [arxiv:2609.01719](https://arxiv.org/abs/2609.01719).
 
-The data containing the checkpoints and final simulation data can be found at 10.5281/zenodo.22131893 (LINK WILL BE ADDED)
+The data containing the checkpoints, MPS correlations and final simulation data can be found at [10.5281/zenodo.22131893](https://zenodo.org/records/22131893).
 
-Simulate the time-dependent transverse-field Ising (TFIM) **quantum-anneal quench** of D-Wave
-spin-glass instances following the schedule in [`data_dwave/qa_schedule.csv`](data_dwave/qa_schedule.csv), and
-compare the resulting 2-local `⟨σᶻᵢσᶻⱼ⟩` correlations against MPS (DMRG) and QPU reference data.
+This repo can be used to simulate the time-dependent transverse-field Ising (TFIM) quantum annealing quench of the spin-glass instances of D-Wave's original quantum advantage experiment [10.1126/science.ado6285](https://www.science.org/doi/10.1126/science.ado6285).
 
 With anneal parameter `s ∈ [0,1]` traversed in physical time `t_a` (ns), the state evolves under
 
 $$
-i d|ψ⟩/ds = π·t_a·[ J(s)·Hzz + Γ(s)·Hx ] |ψ⟩ , \qquad  H_{zz} = Σ_{<ij>} w_ij σᶻᵢσᶻⱼ ,   H_x = −Σᵢ σˣᵢ
+i d|ψ⟩/ds = 2π·t_a·[ J(s)·Hzz + Γ(s)·Hx ] |ψ⟩ , \qquad  H_{zz} = Σ_{<ij>} w_ij σᶻᵢσᶻⱼ ,   H_x = −Σᵢ σˣᵢ
 $$
 
 starting from the ground state of `H(0)`. The state is a Jastrow correlator
 ansatz evolved with the blurred TDVP driver.
 
-All reusable logic lives in [`src/`](src/); the root scripts/notebooks only orchestrate.
+All reusable logic lives in [`src/`](src/); the root scripts and notebooks only orchestrate.
 
-Please find the data and checkpoints of the paper here: **Zenodo LINK**
 ---
 
 ## Layout
